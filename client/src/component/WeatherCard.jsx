@@ -95,7 +95,7 @@ const WeatherApp = () => {
             <div className="text-lg font-semibold mb-2">
               Today <span className="text-[#FF6600]">▼</span>
             </div>
-            
+
             <WiDaySunny size={80} className="text-[#FF6600]" />
             <div className="text-6xl font-bold mt-2">
               {Math.round(current.temp)}°
@@ -116,24 +116,33 @@ const WeatherApp = () => {
           {/* Right Hourly Forecast & Text */}
           <div className="flex flex-col gap-4 w-full md:w-1/2">
             {/* Hourly Forecast */}
-            <div className="bg-white/30 backdrop-blur-md rounded-2xl p-4 grid grid-cols-5 md:grid-cols-10 text-white text-sm text-center">
-              {Array.isArray(current.hourly) && current.hourly.length > 0 ? (
-                current.hourly.map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div>{item.time}</div>
-                    <WiCloudy size={24} className="mt-1" />
-                    <div>{Math.round(item.temp)}°</div>
-                  </div>
-                ))
-              ) : (
-                <div className="grid grid-cols-6 gap-10 w-full px-4">
-                  {[
-                    { time: "Now", temp: 32, icon: <WiDaySunny size={24} /> },
-                    { time: "2:00", temp: 31, icon: <WiDaySunny size={24} /> },
-                    { time: "3:00", temp: 30, icon: <WiDaySunny size={24} /> },
+            <div className="bg-white/30 backdrop-blur-md rounded-2xl p-4 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-x-4 text-white text-sm text-center">
+              {Array.isArray(current.hourly) && current.hourly.length > 0
+                ? current.hourly.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center w-full space-y-1"
+                    >
+                      <div>{item.time}</div>
+                      <WiCloudy size={24} className="mt-1" />
+                      <div>{Math.round(item.temp)}°</div>
+                    </div>
+                  ))
+                : [
+                    { time: "Now", temp: 25, icon: <WiDaySunny size={24} /> },
+                    {
+                      time: "2:00",
+                      temp: 23,
+                      icon: <WiDaySunny size={24} />,
+                    },
+                    {
+                      time: "3:00",
+                      temp: 22,
+                      icon: <WiDaySunny size={24} />,
+                    },
                     {
                       time: "4:00",
-                      temp: 29,
+                      temp: 20,
                       icon: <WiDayCloudy size={24} />,
                     },
                     {
@@ -142,15 +151,23 @@ const WeatherApp = () => {
                       icon: <WiDayCloudy size={24} />,
                     },
                     { time: "6:00", temp: 27, icon: <WiSunset size={24} /> },
+                    { time: "7:00", temp: 27, icon: <WiSunset size={24} /> },
+                    { time: "8:00", temp: 27, icon: <WiSunset size={24} /> },
+                    { time: "9:00", temp: 27, icon: <WiSunset size={24} /> },
                   ].map((item, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                      <div className="text-sm text-gray-600">{item.time}</div>
-                      <div className="mt-1">{item.icon}</div>
-                      <div className="text-sm font-medium">{item.temp}°</div>
+                    <div
+                      key={index}
+                      className="flex flex-col items-center space-y-1  min-w-[70px]"
+                    >
+                      <div className="h-6 flex items-center justify-center text-xs truncate">
+                        {item.time}
+                      </div>
+                      <WiCloudy size={24} className="mt-1" />
+                      <div className="text-sm font-medium h-6 flex items-center justify-center">
+                        {Math.round(item.temp)}°
+                      </div>
                     </div>
                   ))}
-                </div>
-              )}
             </div>
 
             <div className="mt-8 text-gray-50 rounded-xl p-6 shadow-lg">
@@ -191,6 +208,7 @@ const WeatherApp = () => {
                   <td className="p-2">
                     {dayjs(item.date).format("YYYY-MM-DD")}
                   </td>
+                  
                   <td className="p-2">{item.location}</td>
                   <td className="p-2">{item.temperature}°C</td>
                   <td className="p-2">{item.feels_like}°C</td>
@@ -207,97 +225,3 @@ const WeatherApp = () => {
 };
 
 export default WeatherApp;
-
-// import React, { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchWeather } from "../redux/weatherSlice"; // Adjust path as needed
-// import { WiDaySunny, WiCloudy } from "react-icons/wi";
-
-// const WeatherApp = () => {
-//   const dispatch = useDispatch();
-//   const { current, loading, error } = useSelector((state) => state.weather);
-//   console.log(current);
-//   useEffect(() => {
-//     dispatch(fetchWeather("Delhi")); // Replace or make dynamic
-//   }, [dispatch]);
-
-//   return (
-//     <div
-//       className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"
-//       style={{ backgroundImage: `url('/bg.png')` }}
-//     >
-//       {loading ? (
-//         <div className="text-white text-xl">Loading...</div>
-//       ) : error ? (
-//         <div className="text-red-500 text-xl">{error}</div>
-//       ) : current ? (
-//         <div className="w-full max-w-4xl bg-white/20 backdrop-blur-md rounded-3xl p-4 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
-//           {/* Left Weather Box */}
-//           <div className="bg-[#FFD7A3] w-full md:w-1/2 rounded-3xl p-6 flex flex-col items-center text-center text-[#FF6600]">
-//             <div className="text-lg font-semibold mb-2">
-//               Today <span className="text-[#FF6600]">▼</span>
-//             </div>
-//             <WiDaySunny size={80} className="text-[#FF6600]" />
-//             <div className="text-6xl font-bold mt-2">
-//               {Math.round(current.temp)}°
-//             </div>
-//             <div className="text-xl font-semibold mt-1">
-//               {current.condition}
-//             </div>
-//             <div className="text-sm text-[#FF6600] mt-2">
-//               {current.city}, {current.region}
-//             </div>
-//             <div className="text-sm text-[#FF6600]">{current.date}</div>
-//             <div className="text-sm text-[#FF6600] mt-2">
-//               Feels like {Math.round(current.feels_like)} | Sunset{" "}
-//               {current.sunset}
-//             </div>
-//           </div>
-
-//           {/* Right Hourly Forecast & Text */}
-//           <div className="flex flex-col gap-4 w-full md:w-1/2">
-//             {/* Hourly Forecast */}
-//             <div className="bg-white/30 backdrop-blur-md rounded-2xl p-4 grid grid-cols-5 md:grid-cols-10 text-white text-sm text-center">
-//               {Array.isArray(current.hourly) && current.hourly.length > 0 ? (
-//                 current.hourly.map((item, index) => (
-//                   <div key={index} className="flex flex-col items-center">
-//                     <div>{item.time}</div>
-//                     <WiCloudy size={24} className="mt-1" />
-//                     <div>{Math.round(item.temp)}°</div>
-//                   </div>
-//                 ))
-//               ) : (
-//                 <div className="col-span-full text-sm text-center">
-//                   No hourly data available
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* Summary Text */}
-//             {/* <div className="text-white">
-//               <h3 className="font-semibold text-lg mb-1">Weather Summary</h3>
-//               <p className="text-sm leading-relaxed">{current.summary}</p>
-//             </div> */}
-//             {/* Random Text Section */}
-//             <div className="mt-8 text-gray-50  rounded-xl p-6 shadow-lg ">
-//               <h2 className="text-xl font-bold mb-4">Random Text</h2>
-//               <p className="">
-//                 Improve him believe opinion offered met and, and
-//                 <br />
-//                 cheered forbade, friendly as stronger speedily by
-//                 <br />
-//                 recurred. Son interest wandered sir addition and say,
-//                 <br />
-//                 Manners beloved affixed picture men ask.
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       ) : (
-//         <div className="text-white text-xl">No weather data available.</div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default WeatherApp;
